@@ -1689,7 +1689,7 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
         #endif
         #if HOTENDS > 5
           #if TEMP_SENSOR_5 == 0
-            #error "TEMP_SENSOR_5 is required with 6 HOTENDS."
+            #error "TEMP_SENSOR_5 is required with 6 or more HOTENDS."
           #elif !HAS_HEATER_5
             #error "HEATER_5_PIN not defined for this board."
           #elif !PIN_EXISTS(TEMP_5)
@@ -1697,7 +1697,7 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
           #endif
           #if HOTENDS > 6
             #if TEMP_SENSOR_6 == 0
-              #error "TEMP_SENSOR_6 is required with 6 HOTENDS."
+              #error "TEMP_SENSOR_6 is required with 7 or more HOTENDS."
             #elif !HAS_HEATER_6
               #error "HEATER_6_PIN not defined for this board."
             #elif !PIN_EXISTS(TEMP_6)
@@ -1705,7 +1705,7 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
             #endif
             #if HOTENDS > 7
               #if TEMP_SENSOR_7 == 0
-                #error "TEMP_SENSOR_7 is required with 7 HOTENDS."
+                #error "TEMP_SENSOR_7 is required with 8 or more HOTENDS."
               #elif !HAS_HEATER_7
                 #error "HEATER_7_PIN not defined for this board."
               #elif !PIN_EXISTS(TEMP_7)
