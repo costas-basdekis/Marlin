@@ -172,7 +172,15 @@ class FilamentSensorBase {
 
     // Return a bitmask of runout flag states (1 bits always indicates runout)
     static inline uint8_t poll_runout_states() {
-      return poll_runout_pins()
+      return compare_runout_states(poll_runout_pins(), get_runout_states());
+    }
+
+    static inline uint8_t compare_runout_states(uint8_t pins, uint8_t states) {
+      return pins ^ states;
+    }
+
+    static inline uint8_t get_runout_states() {
+      return 0
         #if FIL_RUNOUT_STATE == LOW
           ^ uint8_t(_BV(NUM_RUNOUT_SENSORS) - 1)
         #endif
