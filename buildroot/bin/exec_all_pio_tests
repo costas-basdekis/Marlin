@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+shopt nullglob
+
+function collect() {
+  tests=(./test/*/)
+  if [[ "${#tests[@]}" -eq 0 ]]; then
+    printf "\033[0;31mNo tests found\033[0m\n"
+    exit 1
+  fi
+
+  echo "Collected ${#tests[@]} test suites..."
+}
+
+function run() {
+  # We need to compile and run each test suite separately, since they will have
+  # different configuration
+  total=()
+  failed=()
+  for test in ./test/*/; do
+    total+=("$test")
+    if ! exec_pio_test "$(basename "$test")"; then
+      failed+=("$test")
+    fi
+  done
+}
+
+function results() {
+  if [[ ${#failed[@]} -eq 0 ]]; then
+    printf "\033[0;32mPassed: ${#total[@]}\033[0m\n"
+    exit 0
+  else
+    printf "\033[0;31mFailed: ${#failed[@]} out of ${#total[@]}\033[0m\n"
+    for test in "${failed[@]}"; do
+      printf " * $test\n"
+    done
+    exit 1
+  fi
+}
+
+collect;
+run;
+results;
