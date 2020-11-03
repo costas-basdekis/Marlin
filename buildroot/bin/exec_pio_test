@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -e
+
+function get_configuration() {
+  if [[ ! -f "$1" ]] ; then
+    printf "\033[0;31mCouldn't find test \033[0m$1\n" >&2
+    return 1
+  fi
+  SC=START_CONFIGURATION
+  EC=END_CONFIGURATION
+
+  configuration_with_markers=$(sed -n '/'$SC'/,/'$EC'/p;/^'$EC'/q' "$1")
+
+  if ! echo "$configuration_with_markers" | head -n 1 | grep "$SC" > /dev/null ; then
+    printf "\033[0;31mCouldn't find \033[1;33m$SC\033[0;31m string in test \033[0m$1\n" >&2
+    return 1
+  fi
+
+  if ! echo "$configuration_with_markers" | tail -n 1 | grep "$EC" > /dev/null ; then
+    printf "\033[0;31mCouldn't find \033[1;33m$EC\033[0;31m string in test \033[0m$1\n" >&2
+    return 1
+  fi
+
+  echo "$configuration_with_markers" | tail -n +2 | head -n -1
+}
+
+function prepare() {
+  # Restore configuration
+  restore_configs
+
+  # Set configuration from test
+  opt_set MOTHERBOARD BOARD_LINUX_RAMPS
+  if [[ -n "$1" ]] ; then
+    eval "$1"
+  fi
+}
+
+function run() {
+  if [[ -n "$VERBOSE_PLATFORMIO" ]] ; then
+    verbose='-v'
+  else
+    verbose=''
+  fi
+  platformio test $verbose -e linux_native -f "$1"
+}
+
+function cleanup() {
+  if [[ -n "$GIT_RESET_HARD" ]]; then
+    echo git reset --hard HEAD
+  else
+    restore_configs
+  fi
+}
+
+configuration=$(get_configuration "test/$1/test_all.cpp")
+trap cleanup EXIT
+prepare "$configuration"
+run "$1"

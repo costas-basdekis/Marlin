@@ -18,6 +18,7 @@
  *
  */
 #ifdef __PLAT_LINUX__
+#ifndef UNIT_TEST
 
 extern void setup();
 extern void loop();
@@ -133,4 +134,5 @@ int main() {
   read_serial.join();
 }
 
+#endif // UNIT_TEST
 #endif // __PLAT_LINUX__
