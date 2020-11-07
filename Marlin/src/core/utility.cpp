@@ -49,8 +49,8 @@ void safe_delay(millis_t ms) {
 
 #if ENABLED(DEBUG_LEVELING_FEATURE)
   #include "./DebugLogger.h"
-  DebugLogger debugLogger;
   void log_machine_info() {
+    DebugLogger debugLogger;
     debugLogger.log_machine_info_();
   }
 #endif // DEBUG_LEVELING_FEATURE

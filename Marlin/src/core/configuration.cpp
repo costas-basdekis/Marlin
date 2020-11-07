@@ -15,7 +15,7 @@
 
 #define _MATCH_SWITCH(CASE, VALUE) case CASE: return VALUE;
 
-bool Configuration::validate() {
+bool Configuration::validate() const {
   if (getMachineType() == CONF_MACHINE_TYPE_UNKNOWN) {
     return false;
   }
@@ -31,7 +31,7 @@ bool Configuration::validate() {
   return true;
 }
 
-uint8_t Configuration::getMachineType() {
+uint8_t Configuration::getMachineType() const {
   uint8_t machineType = CONF_MACHINE_TYPE_UNKNOWN;
 
   #define CHECK_AND_SET_MACHINE_TYPE(ATTRIBUTE, VALUE) \
@@ -48,7 +48,7 @@ uint8_t Configuration::getMachineType() {
   return machineType;
 }
 
-uint8_t Configuration::getProbeType() {
+uint8_t Configuration::getProbeType() const {
   uint8_t probeType = CONF_PROBE_TYPE_UNKNOWN;
 
   #define CHECK_AND_SET_MACHINE_TYPE(ATTRIBUTE, VALUE) \
@@ -73,11 +73,11 @@ uint8_t Configuration::getProbeType() {
   return probeType;
 }
 
-bool Configuration::probeUsesBed() {
+bool Configuration::probeUsesBed() const {
   return probeUsesBed(getProbeType());
 }
 
-bool Configuration::probeUsesBed(uint8_t probeType) {
+bool Configuration::probeUsesBed(uint8_t probeType) const {
   switch (probeType) {
   _MATCH_SWITCH(CONF_PROBE_TYPE_Z_SERVO_PROBE, true)
   _MATCH_SWITCH(CONF_PROBE_TYPE_FIX_MOUNTED_PROBE, true)
@@ -94,15 +94,15 @@ bool Configuration::probeUsesBed(uint8_t probeType) {
   return false;
 }
 
-bool Configuration::probeHasXYOffset() {
+bool Configuration::probeHasXYOffset() const {
   return probeHasXYOffset(getProbeType());
 }
 
-bool Configuration::probeHasXYOffset(uint8_t probeType) {
+bool Configuration::probeHasXYOffset(uint8_t probeType) const {
   return probeUsesBed() && !probeNozzleAsProbe;
 }
 
-bool Configuration::hasAblButNotUbl() {
+bool Configuration::hasAblButNotUbl() const {
   return (
     bedLevelingAuto3Point
     || bedLevelingAutoLinear
@@ -110,21 +110,21 @@ bool Configuration::hasAblButNotUbl() {
   );
 }
 
-bool Configuration::hasAblOrUbl() {
+bool Configuration::hasAblOrUbl() const {
   return (
     hasAblButNotUbl()
     || bedLevelingAutoUbl
   );
 }
 
-bool Configuration::isAblPlanar() {
+bool Configuration::isAblPlanar() const {
   return (
     bedLevelingAuto3Point
     || bedLevelingAutoLinear
   );
 }
 
-uint8_t Configuration::getBedLevelingType() {
+uint8_t Configuration::getBedLevelingType() const {
   uint8_t bedLevelingType = CONF_BED_LEVELING_TYPE_UNKNOWN;
 
   #define CHECK_AND_SET_BED_LEVELING_TYPE(ATTRIBUTE, VALUE) \

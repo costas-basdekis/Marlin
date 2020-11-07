@@ -7,7 +7,7 @@
 #ifdef UNIT_TEST
   #define _CONST_
 #else
-  #define _CONST_ static constexpr
+  #define _CONST_ const
 #endif
 
 class Configuration {
@@ -15,7 +15,7 @@ public:
   _CONST_ bool debugLevelingFeature = ENABLED(DEBUG_LEVELING_FEATURE);
 
   // TODO: How do we check and return multiple failures at compile time?
-  bool validate();
+  bool validate() const;
 
   // Machine type
   _CONST_ bool isDelta = ENABLED(DELTA);
@@ -30,7 +30,7 @@ public:
   #define CONF_MACHINE_TYPE_MARKFORGED_XY 4
   #define CONF_MACHINE_TYPE_CARTESIAN     5
 
-  uint8_t getMachineType();
+  uint8_t getMachineType() const;
 
   // Probe type
   _CONST_ bool probeNone = !ENABLED(PROBE_SELECTED);
@@ -59,11 +59,11 @@ public:
   #define CONF_PROBE_TYPE_SENSORLESS_PROBING    11
   #define CONF_PROBE_TYPE_RACK_AND_PINION_PROBE 12
 
-  uint8_t getProbeType();
-  bool probeUsesBed();
-  bool probeUsesBed(uint8_t probeType);
-  bool probeHasXYOffset();
-  bool probeHasXYOffset(uint8_t probeType);
+  uint8_t getProbeType() const;
+  bool probeUsesBed() const;
+  bool probeUsesBed(uint8_t probeType) const;
+  bool probeHasXYOffset() const;
+  bool probeHasXYOffset(uint8_t probeType) const;
 
   // Bed leveling
   _CONST_ bool bedLevelingAuto3Point = ENABLED(AUTO_BED_LEVELING_3POINT);
@@ -79,11 +79,11 @@ public:
   #define CONF_BED_LEVELING_TYPE_UBL      5
   #define CONF_BED_LEVELING_TYPE_MESH     6
 
-  uint8_t getBedLevelingType();
+  uint8_t getBedLevelingType() const;
 
-  bool hasAblButNotUbl();
-  bool hasAblOrUbl();
-  bool isAblPlanar();
+  bool hasAblButNotUbl() const;
+  bool hasAblOrUbl() const;
+  bool isAblPlanar() const;
 
   _CONST_ bool bedLevelingFadeHeight = ENABLED(ENABLE_LEVELING_FADE_HEIGHT);
 };
