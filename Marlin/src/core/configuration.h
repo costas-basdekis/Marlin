@@ -4,19 +4,25 @@
 
 #define PGM_P const char *
 
+#ifdef UNIT_TEST
+  #define _CONST_
+#else
+  #define _CONST_ static constexpr
+#endif
+
 class Configuration {
 public:
-  bool debugLevelingFeature = ENABLED(DEBUG_LEVELING_FEATURE);
+  _CONST_ bool debugLevelingFeature = ENABLED(DEBUG_LEVELING_FEATURE);
 
   // TODO: How do we check and return multiple failures at compile time?
   bool validate();
 
   // Machine type
-  bool isDelta = ENABLED(DELTA);
-  bool isScara = ENABLED(IS_SCARA);
-  bool isCore = ENABLED(IS_CORE);
-  bool isMarkForgedXy = ENABLED(MARKFORGED_XY);
-  bool isCartesian = ENABLED(IS_CARTESIAN);
+  _CONST_ bool isDelta = ENABLED(DELTA);
+  _CONST_ bool isScara = ENABLED(IS_SCARA);
+  _CONST_ bool isCore = ENABLED(IS_CORE);
+  _CONST_ bool isMarkForgedXy = ENABLED(MARKFORGED_XY);
+  _CONST_ bool isCartesian = ENABLED(IS_CARTESIAN);
   #define CONF_MACHINE_TYPE_UNKNOWN       0
   #define CONF_MACHINE_TYPE_DELTA         1
   #define CONF_MACHINE_TYPE_SCARA         2
@@ -27,18 +33,18 @@ public:
   uint8_t getMachineType();
 
   // Probe type
-  bool probeNone = !ENABLED(PROBE_SELECTED);
-  bool probeManually = ENABLED(PROBE_MANUALLY);
-  bool probeNozzleAsProbe = ENABLED(NOZZLE_AS_PROBE);
-  bool probeFixMountedProbe = ENABLED(FIX_MOUNTED_PROBE);
-  bool probeBltouch = ENABLED(HAS_Z_SERVO_PROBE) && ENABLED(BLTOUCH);
-  bool probeZServoProbe = ENABLED(HAS_Z_SERVO_PROBE) && !ENABLED(BLTOUCH);
-  bool probeTouchMiProbe = ENABLED(TOUCH_MI_PROBE);
-  bool probeZProbeSled = ENABLED(Z_PROBE_SLED);
-  bool probeZProbeAllenKey = ENABLED(Z_PROBE_ALLEN_KEY);
-  bool probeSolenoidProbe = ENABLED(SOLENOID_PROBE);
-  bool probeSensorlessProbing = ENABLED(SENSORLESS_PROBING);
-  bool probeRackAndPinionProbe = ENABLED(RACK_AND_PINION_PROBE);
+  _CONST_ bool probeNone = !ENABLED(PROBE_SELECTED);
+  _CONST_ bool probeManually = ENABLED(PROBE_MANUALLY);
+  _CONST_ bool probeNozzleAsProbe = ENABLED(NOZZLE_AS_PROBE);
+  _CONST_ bool probeFixMountedProbe = ENABLED(FIX_MOUNTED_PROBE);
+  _CONST_ bool probeBltouch = ENABLED(HAS_Z_SERVO_PROBE) && ENABLED(BLTOUCH);
+  _CONST_ bool probeZServoProbe = ENABLED(HAS_Z_SERVO_PROBE) && !ENABLED(BLTOUCH);
+  _CONST_ bool probeTouchMiProbe = ENABLED(TOUCH_MI_PROBE);
+  _CONST_ bool probeZProbeSled = ENABLED(Z_PROBE_SLED);
+  _CONST_ bool probeZProbeAllenKey = ENABLED(Z_PROBE_ALLEN_KEY);
+  _CONST_ bool probeSolenoidProbe = ENABLED(SOLENOID_PROBE);
+  _CONST_ bool probeSensorlessProbing = ENABLED(SENSORLESS_PROBING);
+  _CONST_ bool probeRackAndPinionProbe = ENABLED(RACK_AND_PINION_PROBE);
   #define CONF_PROBE_TYPE_UNKNOWN               0
   #define CONF_PROBE_TYPE_NONE                  1
   #define CONF_PROBE_TYPE_MANUALLY              2
@@ -60,11 +66,11 @@ public:
   bool probeHasXYOffset(uint8_t probeType);
 
   // Bed leveling
-  bool bedLevelingAuto3Point = ENABLED(AUTO_BED_LEVELING_3POINT);
-  bool bedLevelingAutoLinear = ENABLED(AUTO_BED_LEVELING_LINEAR);
-  bool bedLevelingAutoBilinear = ENABLED(AUTO_BED_LEVELING_BILINEAR);
-  bool bedLevelingAutoUbl = ENABLED(AUTO_BED_LEVELING_UBL);
-  bool bedLevelingMesh = ENABLED(MESH_BED_LEVELING);
+  _CONST_ bool bedLevelingAuto3Point = ENABLED(AUTO_BED_LEVELING_3POINT);
+  _CONST_ bool bedLevelingAutoLinear = ENABLED(AUTO_BED_LEVELING_LINEAR);
+  _CONST_ bool bedLevelingAutoBilinear = ENABLED(AUTO_BED_LEVELING_BILINEAR);
+  _CONST_ bool bedLevelingAutoUbl = ENABLED(AUTO_BED_LEVELING_UBL);
+  _CONST_ bool bedLevelingMesh = ENABLED(MESH_BED_LEVELING);
   #define CONF_BED_LEVELING_TYPE_UNKNOWN  0
   #define CONF_BED_LEVELING_TYPE_NONE     1
   #define CONF_BED_LEVELING_TYPE_3POINT   2
@@ -79,5 +85,5 @@ public:
   bool hasAblOrUbl();
   bool isAblPlanar();
 
-  bool bedLevelingFadeHeight = ENABLED(ENABLE_LEVELING_FADE_HEIGHT);
+  _CONST_ bool bedLevelingFadeHeight = ENABLED(ENABLE_LEVELING_FADE_HEIGHT);
 };
