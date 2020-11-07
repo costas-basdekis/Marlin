@@ -19,21 +19,12 @@ bool Configuration::validate() {
   if (getMachineType() == CONF_MACHINE_TYPE_UNKNOWN) {
     return false;
   }
-  if (getMachineName() == nullptr) {
-    return false;
-  }
 
   if (getProbeType() == CONF_PROBE_TYPE_UNKNOWN) {
     return false;
   }
-  if (getProbeName() == nullptr) {
-    return false;
-  }
 
   if (getBedLevelingType() == CONF_BED_LEVELING_TYPE_UNKNOWN) {
-    return false;
-  }
-  if (getBedLevelingName() == nullptr) {
     return false;
   }
 
@@ -55,22 +46,6 @@ uint8_t Configuration::getMachineType() {
   #undef CHECK_AND_SET_MACHINE_TYPE
 
   return machineType;
-}
-
-PGM_P Configuration::getMachineName() {
-  return getMachineName(getMachineType());
-}
-
-PGM_P Configuration::getMachineName(uint8_t machineType) {
-  switch (machineType) {
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_DELTA, machineNameDelta);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_SCARA, machineNameScara);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_CORE, machineNameCoreXy);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_MARKFORGED_XY, machineNameMarkForgedXy);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_CARTESIAN, machineNameCartesian);
-  }
-
-  return nullptr;
 }
 
 uint8_t Configuration::getProbeType() {
@@ -127,29 +102,6 @@ bool Configuration::probeHasXYOffset(uint8_t probeType) {
   return probeUsesBed() && !probeNozzleAsProbe;
 }
 
-PGM_P Configuration::getProbeName() {
-  return getProbeName(getProbeType());
-}
-
-PGM_P Configuration::getProbeName(uint8_t probeType) {
-  switch (probeType) {
-  _MATCH_SWITCH(CONF_PROBE_TYPE_NONE, probeTypeNameNone);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_MANUALLY, probeTypeNameProbeManually);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_NOZZLE_AS_PROBE, probeTypeNameNozzleAsProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_FIX_MOUNTED_PROBE, probeTypeNameFixMountedProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_BLTOUCH, probeTypeNameBltouch);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_SERVO_PROBE, probeTypeNameZServoProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_TOUCH_MI_PROBE, probeTypeNameTouchMiProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_PROBE_SLED, probeTypeNameZProbeSled);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_PROBE_ALLEN_KEY, probeTypeNameZProbeAllenKey);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_SOLENOID_PROBE, probeTypeNameSolenoidProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_SENSORLESS_PROBING, probeTypeNameSensorlessProbing);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_RACK_AND_PINION_PROBE, probeTypeNameRackAndPinionProbe);
-  }
-
-  return nullptr;
-}
-
 bool Configuration::hasAblButNotUbl() {
   return (
     bedLevelingAuto3Point
@@ -191,21 +143,4 @@ uint8_t Configuration::getBedLevelingType() {
   #undef CHECK_AND_SET_BED_LEVELING_TYPE
 
   return bedLevelingType;
-}
-
-PGM_P Configuration::getBedLevelingName() {
-  return getBedLevelingName(getBedLevelingType());
-}
-
-PGM_P Configuration::getBedLevelingName(uint8_t bedLevelingType) {
-  switch (bedLevelingType) {
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_NONE, bedLevelingNameNone);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_3POINT, bedLevelingName3Point);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_LINEAR, bedLevelingNameLinear);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_BILINEAR, bedLevelingNameBilinear);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_UBL, bedLevelingNameUbl);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_MESH, bedLevelingNameMesh);
-  }
-
-  return nullptr;
 }

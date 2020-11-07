@@ -5,6 +5,7 @@
 #include "../configuration/configuration_machine_type.cpp"
 #include "../configuration/configuration_probe_type.cpp"
 #include "../debug/debug_logger.cpp"
+#include "../debug/debug_logger_names.cpp"
 
 void test_common_for_any_configuration() {
   test_basic_gcode();
@@ -13,4 +14,5 @@ void test_common_for_any_configuration() {
   test_configuration_machine_type();
   test_configuration_probe_type();
   test_debug_logger();
+  test_debug_logger_names();
 }

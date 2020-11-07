@@ -5,9 +5,37 @@
 #include "../module/probe.h"
 #include "../MarlinCore.h"
 
+#define _MATCH_SWITCH(CASE, VALUE) case CASE: return VALUE;
+
+PGM_P machineNameDelta = "Delta";
+PGM_P machineNameScara = "SCARA";
+PGM_P machineNameCoreXy = "Core";
+PGM_P machineNameMarkForgedXy = "MarkForged";
+PGM_P machineNameCartesian = "Cartesian";
+
+PGM_P probeTypeNameNone = "";
+PGM_P probeTypeNameProbeManually = "PROBE_MANUALLY";
+PGM_P probeTypeNameNozzleAsProbe = "NOZZLE_AS_PROBE";
+PGM_P probeTypeNameFixMountedProbe = "FIX_MOUNTED_PROBE";
+PGM_P probeTypeNameBltouch = "BLTOUCH";
+PGM_P probeTypeNameZServoProbe = "Z SERVO PROBE";
+PGM_P probeTypeNameTouchMiProbe = "TOUCH_MI_PROBE";
+PGM_P probeTypeNameZProbeSled = "Z_PROBE_SLED";
+PGM_P probeTypeNameZProbeAllenKey = "Z_PROBE_ALLEN_KEY";
+PGM_P probeTypeNameSolenoidProbe = "SOLENOID_PROBE";
+PGM_P probeTypeNameSensorlessProbing = "SENSORLESS_PROBING";
+PGM_P probeTypeNameRackAndPinionProbe = "RACK_AND_PINION_PROBE";
+
+PGM_P bedLevelingNameNone = "";
+PGM_P bedLevelingName3Point = "3POINT";
+PGM_P bedLevelingNameLinear = "LINEAR";
+PGM_P bedLevelingNameBilinear = "BILINEAR";
+PGM_P bedLevelingNameUbl = "UBL";
+PGM_P bedLevelingNameMesh = "MESH";
+
 void DebugLogger::log_machine_info_() {
-  serial->echoLnPgm("Machine Type: ", configuration.getMachineName());
-  serial->echoLnPgm("Probe: ", configuration.getProbeName());
+  serial->echoLnPgm("Machine Type: ", getMachineName());
+  serial->echoLnPgm("Probe: ", getProbeName());
 
   if (configuration.probeUsesBed()) {
     if (!configuration.probeHasXYOffset()) {
@@ -41,7 +69,7 @@ void DebugLogger::log_machine_info_() {
   }
 
   if (configuration.hasAblOrUbl()) {
-    serial->echoPgm("Auto Bed Leveling: ", configuration.getBedLevelingName());
+    serial->echoPgm("Auto Bed Leveling: ", getBedLevelingName());
 
     if (planner.leveling_active) {
       serial->echoLnPgm(" (enabled)");
@@ -85,4 +113,60 @@ void DebugLogger::log_machine_info_() {
 
     serial->echoLn();
   }
+}
+
+PGM_P DebugLogger::getMachineName() {
+  return getMachineName(configuration.getMachineType());
+}
+
+PGM_P DebugLogger::getMachineName(uint8_t machineType) {
+  switch (machineType) {
+    _MATCH_SWITCH(CONF_MACHINE_TYPE_DELTA, machineNameDelta);
+    _MATCH_SWITCH(CONF_MACHINE_TYPE_SCARA, machineNameScara);
+    _MATCH_SWITCH(CONF_MACHINE_TYPE_CORE, machineNameCoreXy);
+    _MATCH_SWITCH(CONF_MACHINE_TYPE_MARKFORGED_XY, machineNameMarkForgedXy);
+    _MATCH_SWITCH(CONF_MACHINE_TYPE_CARTESIAN, machineNameCartesian);
+  }
+
+  return nullptr;
+}
+
+PGM_P DebugLogger::getProbeName() {
+  return getProbeName(configuration.getProbeType());
+}
+
+PGM_P DebugLogger::getProbeName(uint8_t probeType) {
+  switch (probeType) {
+  _MATCH_SWITCH(CONF_PROBE_TYPE_NONE, probeTypeNameNone);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_MANUALLY, probeTypeNameProbeManually);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_NOZZLE_AS_PROBE, probeTypeNameNozzleAsProbe);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_FIX_MOUNTED_PROBE, probeTypeNameFixMountedProbe);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_BLTOUCH, probeTypeNameBltouch);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_SERVO_PROBE, probeTypeNameZServoProbe);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_TOUCH_MI_PROBE, probeTypeNameTouchMiProbe);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_PROBE_SLED, probeTypeNameZProbeSled);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_PROBE_ALLEN_KEY, probeTypeNameZProbeAllenKey);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_SOLENOID_PROBE, probeTypeNameSolenoidProbe);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_SENSORLESS_PROBING, probeTypeNameSensorlessProbing);
+  _MATCH_SWITCH(CONF_PROBE_TYPE_RACK_AND_PINION_PROBE, probeTypeNameRackAndPinionProbe);
+  }
+
+  return nullptr;
+}
+
+PGM_P DebugLogger::getBedLevelingName() {
+  return getBedLevelingName(configuration.getBedLevelingType());
+}
+
+PGM_P DebugLogger::getBedLevelingName(uint8_t bedLevelingType) {
+  switch (bedLevelingType) {
+  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_NONE, bedLevelingNameNone);
+  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_3POINT, bedLevelingName3Point);
+  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_LINEAR, bedLevelingNameLinear);
+  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_BILINEAR, bedLevelingNameBilinear);
+  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_UBL, bedLevelingNameUbl);
+  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_MESH, bedLevelingNameMesh);
+  }
+
+  return nullptr;
 }

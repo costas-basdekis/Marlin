@@ -13,18 +13,6 @@ void test_configuration_multiple_probe_types_invalid() {
   TEST_ASSERT_FALSE(configuration.validate());
 }
 
-void test_configuration_get_probe_name_fix_mounted_probe() {
-  Configuration configuration;
-  configuration.probeNone = false;
-  configuration.probeFixMountedProbe = true;
-  TEST_ASSERT_EQUAL_STRING(configuration.getProbeName(), "FIX_MOUNTED_PROBE");
-}
-
-void test_configuration_get_probe_name_fix_mounted_probe_explicit() {
-  Configuration configuration;
-  TEST_ASSERT_EQUAL(configuration.getProbeName(CONF_PROBE_TYPE_FIX_MOUNTED_PROBE), "FIX_MOUNTED_PROBE");
-}
-
 void test_configuration_has_bed_probe_manually() {
   Configuration configuration;
   configuration.probeNone = false;
@@ -63,8 +51,6 @@ void test_configuration_probe_has_xy_offset_nozzle_as_probe() {
 void test_configuration_probe_type() {
   RUN_TEST(test_configuration_get_probe_type);
   RUN_TEST(test_configuration_multiple_probe_types_invalid);
-  RUN_TEST(test_configuration_get_probe_name_fix_mounted_probe);
-  RUN_TEST(test_configuration_get_probe_name_fix_mounted_probe_explicit);
   RUN_TEST(test_configuration_has_bed_probe_manually);
   RUN_TEST(test_configuration_has_bed_probe_bltouch);
   RUN_TEST(test_configuration_probe_has_xy_offset_manually);
