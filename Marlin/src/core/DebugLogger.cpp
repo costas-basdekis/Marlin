@@ -55,9 +55,9 @@ void DebugLogger::log_machine_info_() {
         serial->echoPgm(" (Aligned With");
       }
       if (probe.offset_xy.y > 0) {
-        serial->echoPgm(configuration.isScara ? PSTR("-Distal") : PSTR("-Back"));
+        serial->echoPgm(configuration.isScara() ? PSTR("-Distal") : PSTR("-Back"));
       } else if (probe.offset_xy.y < 0) {
-        serial->echoPgm(configuration.isScara ? PSTR("-Proximal") : PSTR("-Front"));
+        serial->echoPgm(configuration.isScara() ? PSTR("-Proximal") : PSTR("-Front"));
       } else if (probe.offset_xy.x != 0) {
         serial->echoPgm("-Center");
       }
@@ -89,7 +89,7 @@ void DebugLogger::log_machine_info_() {
           }
         } else {
           float z_correction;
-          if (configuration.bedLevelingAutoUbl) {
+          if (configuration.bedLevelingType == ConfigurationBedLevelingType::AutoUbl) {
             #if ENABLED(AUTO_BED_LEVELING_UBL)
             serial->echoPgm("UBL Adjustment Z");
             z_correction = ubl.get_z_correction(current_position);
@@ -116,56 +116,56 @@ void DebugLogger::log_machine_info_() {
 }
 
 PGM_P DebugLogger::getMachineName() {
-  return getMachineName(configuration.getMachineType());
+  return getMachineName(configuration.machineType);
 }
 
-PGM_P DebugLogger::getMachineName(uint8_t machineType) {
+PGM_P DebugLogger::getMachineName(ConfigurationMachineType machineType) {
   switch (machineType) {
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_DELTA, machineNameDelta);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_SCARA, machineNameScara);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_CORE, machineNameCoreXy);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_MARKFORGED_XY, machineNameMarkForgedXy);
-    _MATCH_SWITCH(CONF_MACHINE_TYPE_CARTESIAN, machineNameCartesian);
+  _MATCH_SWITCH(ConfigurationMachineType::Delta, machineNameDelta);
+  _MATCH_SWITCH(ConfigurationMachineType::Scara, machineNameScara);
+  _MATCH_SWITCH(ConfigurationMachineType::Core, machineNameCoreXy);
+  _MATCH_SWITCH(ConfigurationMachineType::MarkForgedXY, machineNameMarkForgedXy);
+  _MATCH_SWITCH(ConfigurationMachineType::Cartesian, machineNameCartesian);
   }
 
   return nullptr;
 }
 
 PGM_P DebugLogger::getProbeName() {
-  return getProbeName(configuration.getProbeType());
+  return getProbeName(configuration.probeType);
 }
 
-PGM_P DebugLogger::getProbeName(uint8_t probeType) {
+PGM_P DebugLogger::getProbeName(ConfigurationProbeType probeType) {
   switch (probeType) {
-  _MATCH_SWITCH(CONF_PROBE_TYPE_NONE, probeTypeNameNone);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_MANUALLY, probeTypeNameProbeManually);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_NOZZLE_AS_PROBE, probeTypeNameNozzleAsProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_FIX_MOUNTED_PROBE, probeTypeNameFixMountedProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_BLTOUCH, probeTypeNameBltouch);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_SERVO_PROBE, probeTypeNameZServoProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_TOUCH_MI_PROBE, probeTypeNameTouchMiProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_PROBE_SLED, probeTypeNameZProbeSled);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_Z_PROBE_ALLEN_KEY, probeTypeNameZProbeAllenKey);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_SOLENOID_PROBE, probeTypeNameSolenoidProbe);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_SENSORLESS_PROBING, probeTypeNameSensorlessProbing);
-  _MATCH_SWITCH(CONF_PROBE_TYPE_RACK_AND_PINION_PROBE, probeTypeNameRackAndPinionProbe);
+  _MATCH_SWITCH(ConfigurationProbeType::None, probeTypeNameNone);
+  _MATCH_SWITCH(ConfigurationProbeType::Manually, probeTypeNameProbeManually);
+  _MATCH_SWITCH(ConfigurationProbeType::NozzleAsProbe, probeTypeNameNozzleAsProbe);
+  _MATCH_SWITCH(ConfigurationProbeType::FixMountedProbe, probeTypeNameFixMountedProbe);
+  _MATCH_SWITCH(ConfigurationProbeType::Bltouch, probeTypeNameBltouch);
+  _MATCH_SWITCH(ConfigurationProbeType::ZServoProbe, probeTypeNameZServoProbe);
+  _MATCH_SWITCH(ConfigurationProbeType::TouchMiProbe, probeTypeNameTouchMiProbe);
+  _MATCH_SWITCH(ConfigurationProbeType::ZProbeSled, probeTypeNameZProbeSled);
+  _MATCH_SWITCH(ConfigurationProbeType::ZProbeAllenKey, probeTypeNameZProbeAllenKey);
+  _MATCH_SWITCH(ConfigurationProbeType::SolenoidProbe, probeTypeNameSolenoidProbe);
+  _MATCH_SWITCH(ConfigurationProbeType::SensorlessProbing, probeTypeNameSensorlessProbing);
+  _MATCH_SWITCH(ConfigurationProbeType::RackAndPinionProbe, probeTypeNameRackAndPinionProbe);
   }
 
   return nullptr;
 }
 
 PGM_P DebugLogger::getBedLevelingName() {
-  return getBedLevelingName(configuration.getBedLevelingType());
+  return getBedLevelingName(configuration.bedLevelingType);
 }
 
-PGM_P DebugLogger::getBedLevelingName(uint8_t bedLevelingType) {
+PGM_P DebugLogger::getBedLevelingName(ConfigurationBedLevelingType bedLevelingType) {
   switch (bedLevelingType) {
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_NONE, bedLevelingNameNone);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_3POINT, bedLevelingName3Point);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_LINEAR, bedLevelingNameLinear);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_BILINEAR, bedLevelingNameBilinear);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_UBL, bedLevelingNameUbl);
-  _MATCH_SWITCH(CONF_BED_LEVELING_TYPE_MESH, bedLevelingNameMesh);
+  _MATCH_SWITCH(ConfigurationBedLevelingType::None, bedLevelingNameNone);
+  _MATCH_SWITCH(ConfigurationBedLevelingType::Auto3Point, bedLevelingName3Point);
+  _MATCH_SWITCH(ConfigurationBedLevelingType::AutoLinear, bedLevelingNameLinear);
+  _MATCH_SWITCH(ConfigurationBedLevelingType::AutoBilinear, bedLevelingNameBilinear);
+  _MATCH_SWITCH(ConfigurationBedLevelingType::AutoUbl, bedLevelingNameUbl);
+  _MATCH_SWITCH(ConfigurationBedLevelingType::Mesh, bedLevelingNameMesh);
   }
 
   return nullptr;
