@@ -4,44 +4,44 @@
 void test_configuration_get_machine_name_core_xy() {
   DebugLogger debugLogger;
   Configuration &configuration = debugLogger.configuration;
-  configuration.isCartesian = false;
-  configuration.isCore = true;
+  configuration.machineType = ConfigurationMachineType::Core;
   TEST_ASSERT_EQUAL_STRING("Core", debugLogger.getMachineName());
 }
 
 void test_configuration_get_machine_name_core_xy_explicit() {
   DebugLogger debugLogger;
-  TEST_ASSERT_EQUAL_STRING("Core", debugLogger.getMachineName(CONF_MACHINE_TYPE_CORE));
+  TEST_ASSERT_EQUAL_STRING("Core", debugLogger.getMachineName(ConfigurationMachineType::Core));
 }
 
 void test_configuration_get_probe_name_fix_mounted_probe() {
   DebugLogger debugLogger;
   Configuration &configuration = debugLogger.configuration;
-  configuration.probeNone = false;
-  configuration.probeFixMountedProbe = true;
+  configuration.probeType = ConfigurationProbeType::FixMountedProbe;
   TEST_ASSERT_EQUAL_STRING("FIX_MOUNTED_PROBE", debugLogger.getProbeName());
 }
 
 void test_configuration_get_probe_name_fix_mounted_probe_explicit() {
   DebugLogger debugLogger;
-  TEST_ASSERT_EQUAL_STRING("FIX_MOUNTED_PROBE", debugLogger.getProbeName(CONF_PROBE_TYPE_FIX_MOUNTED_PROBE));
+  TEST_ASSERT_EQUAL_STRING("FIX_MOUNTED_PROBE", debugLogger.getProbeName(ConfigurationProbeType::FixMountedProbe));
 }
 
 void test_configuration_get_bed_leveling_name() {
   DebugLogger debugLogger;
+  Configuration &configuration = debugLogger.configuration;
+  configuration.bedLevelingType = ConfigurationBedLevelingType::None;
   TEST_ASSERT_EQUAL_STRING("", debugLogger.getBedLevelingName());
 }
 
 void test_configuration_get_bed_leveling_name_3_point() {
   DebugLogger debugLogger;
   Configuration &configuration = debugLogger.configuration;
-  configuration.bedLevelingAuto3Point = true;
+  configuration.bedLevelingType = ConfigurationBedLevelingType::Auto3Point;
   TEST_ASSERT_EQUAL_STRING("3POINT", debugLogger.getBedLevelingName());
 }
 
 void test_configuration_get_bed_leveling_name_3_point_explicit() {
   DebugLogger debugLogger;
-  TEST_ASSERT_EQUAL_STRING("3POINT", debugLogger.getBedLevelingName(CONF_BED_LEVELING_TYPE_3POINT));
+  TEST_ASSERT_EQUAL_STRING("3POINT", debugLogger.getBedLevelingName(ConfigurationBedLevelingType::Auto3Point));
 }
 
 void test_debug_logger_names() {

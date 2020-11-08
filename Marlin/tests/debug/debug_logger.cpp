@@ -22,10 +22,8 @@ void test_debug_logger_output_core_xy_fix_mounted_probe() {
   TestLogger testLogger;
   debugLogger.serial = &testLogger;
 
-  configuration.isCartesian = false;
-  configuration.isCore = true;
-  configuration.probeNone = false;
-  configuration.probeFixMountedProbe = true;
+  configuration.machineType = ConfigurationMachineType::Core;
+  configuration.probeType = ConfigurationProbeType::FixMountedProbe;
   debugLogger.log_machine_info_();
   TEST_ASSERT_EQUAL_STRING((
     "Machine Type: Core\n"
@@ -40,11 +38,9 @@ void test_debug_logger_output_core_xy_fix_mounted_probe_3_point() {
   TestLogger testLogger;
   debugLogger.serial = &testLogger;
 
-  configuration.isCartesian = false;
-  configuration.isCore = true;
-  configuration.probeNone = false;
-  configuration.probeFixMountedProbe = true;
-  configuration.bedLevelingAuto3Point = true;
+  configuration.machineType = ConfigurationMachineType::Core;
+  configuration.probeType = ConfigurationProbeType::FixMountedProbe;
+  configuration.bedLevelingType = ConfigurationBedLevelingType::Auto3Point;
   debugLogger.log_machine_info_();
   TEST_ASSERT_EQUAL_STRING((
     "Machine Type: Core\n"
