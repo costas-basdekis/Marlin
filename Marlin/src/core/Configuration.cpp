@@ -1,4 +1,4 @@
-#include "./configuration.h"
+#include "./Configuration.h"
 
 #define _CHECK_AND_SET(VARIABLE, DEFAULT, ATTRIBUTE, VALUE) if (ATTRIBUTE) { \
   if (VARIABLE != DEFAULT) { \

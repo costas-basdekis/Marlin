@@ -36,6 +36,8 @@ enum class ConfigurationBedLevelingType : uint8_t {
 
 class Configuration {
 public:
+  bool debugLevelingFeature = false;
+
   ConfigurationMachineType machineType = ConfigurationMachineType::Cartesian;
 
   bool isScara() const;

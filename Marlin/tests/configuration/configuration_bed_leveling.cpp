@@ -1,5 +1,5 @@
 #include <unity.h>
-#include <src/core/configuration.h>
+#include <src/core/Configuration.h>
 
 void test_configuration_get_bed_leveling_type() {
   Configuration configuration;

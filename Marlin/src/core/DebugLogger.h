@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./configuration.h"
+#include "./Configuration.h"
 #include "./SerialLogger.h"
 
 class DebugLogger {
