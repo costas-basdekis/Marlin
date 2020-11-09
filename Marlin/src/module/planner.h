@@ -369,6 +369,7 @@ class Planner {
       #endif
     #else
       static constexpr bool leveling_active = false;
+      static constexpr float z_fade_height = 0, inverse_z_fade_height = 0;
     #endif
 
     #if ENABLED(LIN_ADVANCE)
