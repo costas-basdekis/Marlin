@@ -132,39 +132,29 @@ Bellow that we only add a `main` function, that calls the tests:
 /* START_CONFIGURATION
 ...
 END CONFIGURATION */
-#inlcude <unity.h>
-// Include tests header files
+#include "tests/marlin_tests.cpp"
+// Include tests code files, eg:
+// #include "tests/your_tests.cpp"
 
-// This function needs to always look like this
-int main(int argc, char **argv) {
-  UNITY_BEGIN();
-  // Call all the tests you included
-  UNITY_END();
-
-  return 0;
-}
+// You need to provide a `main` function, and this macro does it for you, with
+// the additional convenience of running all collected tests
+MAIN_FOR_MARLIN_TESTS();
 ```
 
 The actual test code is inside `Marlin/tests`, and is rather grouped by feature,
 test functionality, and capabilities (based on configuration). We group tests in 
-folders per the above, eg `runout/runout_1_extruder.cpp`, and in each file we 
-have one function that calls all the relevant tests:
+folders per the above, eg `runout/runout_1_extruder.cpp`, and all tests marked
+with `MARLIN_TEST` are automatically collected, and will be run in 
+`MAIN_FOR_MARLIN_TESTS`:
 ```cpp
-#include <unity.h>
+#include "tests/marlin_tests.h"
 // Include Marlin code, or other test files
 
-void test_foo_works_under_condition(void) {
+MARLIN_TEST(test_foo_works_under_condition, {
   ...
   TEST_ASSERT_EQUAL(1, marlin.calculation());
   ...
-}
-
-// This function needs to include all the tests in this file, and perhaps any
-other relevant tests in other files, using the `RUN_TEST` macro.
-void test_feature() {
-  RUN_TEST(test_foo_works_under_condition);
-  ...
-}
+});
 ``` 
 
 We should also group tests for common configurations, so that we can group tests

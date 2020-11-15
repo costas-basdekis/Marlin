@@ -1,13 +1,7 @@
 /* START_CONFIGURATION
 
 END_CONFIGURATION */
-#include <unity.h>
+#include "tests/marlin_tests.cpp"
 #include "tests/common_for/any_configuration.cpp"
 
-int main(int argc, char **argv) {
-  UNITY_BEGIN();
-  test_common_for_any_configuration();
-  UNITY_END();
-
-  return 0;
-}
+MAIN_FOR_MARLIN_TESTS();

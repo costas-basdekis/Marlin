@@ -23,15 +23,8 @@ opt_enable EMERGENCY_PARSER;
 opt_enable NOZZLE_PARK_FEATURE;
 
 END_CONFIGURATION */
-#include <unity.h>
+#include "tests/marlin_tests.cpp"
 #include "tests/common_for/any_configuration.cpp"
 #include "tests/runout/runout_3_extruders.cpp"
 
-int main(int argc, char **argv) {
-  UNITY_BEGIN();
-  test_common_for_any_configuration();
-  test_runout();
-  UNITY_END();
-
-  return 0;
-}
+MAIN_FOR_MARLIN_TESTS();
