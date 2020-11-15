@@ -42,6 +42,31 @@ exec_test $1 $2 "BigTreeTech GTR 8 Extruders with Auto-Fan, Mixed TMC Drivers, a
 restore_configs
 opt_set MOTHERBOARD BOARD_BTT_GTR_V1_0
 opt_set SERIAL_PORT -1
+opt_set EXTRUDERS 8
+opt_set TEMP_SENSOR_1 1
+opt_set TEMP_SENSOR_2 1
+opt_set TEMP_SENSOR_3 1
+# We need to check that an error occurs for the following
+#opt_set TEMP_SENSOR_4 1
+#opt_set TEMP_SENSOR_5 1
+#opt_set TEMP_SENSOR_6 1
+#opt_set TEMP_SENSOR_7 1
+# Not necessary to enable auto-fan for all extruders to hit problematic code paths
+opt_set E0_AUTO_FAN_PIN PC10
+opt_set E1_AUTO_FAN_PIN PC11
+opt_set E2_AUTO_FAN_PIN PC12
+opt_set X_DRIVER_TYPE TMC2208
+opt_set Y_DRIVER_TYPE TMC2130
+opt_enable REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+strings=("TEMP_SENSOR_4 is required with 5 or more HOTENDS"
+"TEMP_SENSOR_5 is required with 6 or more HOTENDS"
+"TEMP_SENSOR_6 is required with 7 or more HOTENDS"
+"TEMP_SENSOR_7 is required with 8 or more HOTENDS")
+exec_test_failing $1 $2 "Test missing temperature sensors" "$3" "${strings[@]}"
+
+restore_configs
+opt_set MOTHERBOARD BOARD_BTT_GTR_V1_0
+opt_set SERIAL_PORT -1
 opt_set EXTRUDERS 6
 opt_set TEMP_SENSOR_1 1
 opt_set TEMP_SENSOR_2 1
