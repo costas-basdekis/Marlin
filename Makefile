@@ -60,24 +60,20 @@ tests-code-single-ci:
 # TODO: How can we limit tests with ONLY_TEST with platformio?
 tests-code-single-local:
 	@if ! test -n "$(TEST_TARGET)" ; then echo "***ERROR*** Set TEST_TARGET=<your-module> or use make tests-code-all-local" ; return 1; fi
-	export PATH=./buildroot/bin/:./buildroot/tests/:${PATH} \
-	  && export VERBOSE_PLATFORMIO=$(VERBOSE_PLATFORMIO) \
-	  && exec_pio_test $(TEST_TARGET)
+	platformio run -t marlin_$(TEST_TARGET)
 .PHONY: tests-code-single-local
 
 tests-code-single-local-docker:
 	@if ! test -n "$(TEST_TARGET)" ; then echo "***ERROR*** Set TEST_TARGET=<your-module> or use make tests-code-all-local-docker" ; return 1; fi
-	docker-compose run --rm marlin $(MAKE) tests-code-single-local TEST_TARGET=$(TEST_TARGET) VERBOSE_PLATFORMIO=$(VERBOSE_PLATFORMIO) GIT_RESET_HARD=$(GIT_RESET_HARD) ONLY_TEST="$(ONLY_TEST)"
+	docker-compose run --rm marlin $(MAKE) tests-code-single-local TEST_TARGET=$(TEST_TARGET) ONLY_TEST="$(ONLY_TEST)"
 .PHONY: tests-code-single-local-docker
 
 tests-code-all-local:
-	export PATH=./buildroot/bin/:./buildroot/tests/:${PATH} \
-	  && export VERBOSE_PLATFORMIO=$(VERBOSE_PLATFORMIO) \
-	  && exec_all_pio_tests
+	platformio run -t test-marlin
 .PHONY: tests-code-all-local
 
 tests-code-all-local-docker:
-	docker-compose run --rm marlin $(MAKE) tests-code-all-local VERBOSE_PLATFORMIO=$(VERBOSE_PLATFORMIO) GIT_RESET_HARD=$(GIT_RESET_HARD)
+	docker-compose run --rm marlin $(MAKE) tests-code-all-local
 .PHONY: tests-code-all-local-dockerS
 
 setup-local-docker:
